@@ -23,4 +23,5 @@ from rest_framework import routers
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('issues.urls')),
+    path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]

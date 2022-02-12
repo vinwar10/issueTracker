@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_auth',
+    'rest_framework.authtoken',
     'issues',
+    'knox',
     'ckeditor',
     'ckeditor_uploader',
 ]
@@ -116,7 +119,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'knox.auth.TokenAuthentication',
+    ],
 }
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -140,6 +148,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
+LOGIN_REDIRECT_URL = '/api/projects/'
 
 CKEDITOR_UPLOAD_PATH = os.path.join(BASE_DIR,'uploads')
 CKEDITOR_CONFIGS = {

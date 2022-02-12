@@ -19,7 +19,6 @@ class Projects(models.Model):
 
 
 class Issues(models.Model):
-    ### media upload pending . . 
     project = models.ForeignKey(Projects,related_name='issues',on_delete=models.CASCADE) # each project can have multiple issues
     heading = models.CharField(max_length=50)
     description = RichTextUploadingField()
