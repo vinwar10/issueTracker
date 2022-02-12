@@ -2,14 +2,13 @@
 
 > Django Assignment - Backend API for bug tracking platform
 
-NOTE :- NOT COMPLETED / WORK IN PROGRESS
+NOTE :- COMPLETED
 
 WORK DONE : 
 1. Models completed 
 2. Basic ModelViewSets ready
 3. Router working
 4. Auth, Permissions
-4. Platform related APIs 
+5. Platform related APIs 
+6. Invite related API
 
-PENDING : 
-1. Invite related API
