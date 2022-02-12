@@ -2,7 +2,7 @@
 
 > Django Assignment - Backend API for bug tracking platform
 
-NOTE :- COMPLETED
+STATUS :- COMPLETED
 
 WORK DONE : 
 1. Models completed 
