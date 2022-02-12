@@ -55,3 +55,17 @@ class Issues(models.Model):
 
     def __str__(self):
         return self.heading
+
+class Invite(models.Model):
+    project = models.ForeignKey(Projects,related_name='invite',on_delete=models.CASCADE)
+    invitee = models.ForeignKey(User, related_name='invitee',on_delete=models.CASCADE)
+    
+    OPERATION = (
+        ('ADD','ADD'),
+        ('DELETE','DELETE')
+    )
+    operation = models.CharField(max_length=50,choices=OPERATION)
+    url = models.CharField(max_length=500,unique=True,null= True)
+
+    slug = models.SlugField(max_length = 50, null = True, blank = True,unique=True)
+    datetime = models.DateTimeField(auto_now_add=True)

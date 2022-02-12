@@ -67,3 +67,25 @@ class IssueSerializer(serializers.ModelSerializer):
         model = Issues
         fields = ('id','project','heading','description','composer','composer_username','priority','tags','status','datetime')
         read_only_fields = ('datetime','composer')
+
+
+
+###
+### INVITE SERIALIZER
+###
+class InviteSerializer(serializers.ModelSerializer):
+    project = serializers.PrimaryKeyRelatedField(
+        queryset = Projects.objects.all(), required = True
+    )
+    invitee = serializers.PrimaryKeyRelatedField( 
+        queryset = User.objects.all(), required = True
+    )
+    class Meta:
+        model = Invite
+        fields = ('id','project','invitee','operation','url')
+        read_only_fields = ('url','slug')
+
+
+
+
+

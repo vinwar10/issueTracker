@@ -150,6 +150,11 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/api/projects/'
 
+SITE_HOST = '127.0.0.1:8000'
+
+INVITE_HEADER_URL = "/api/invites/"
+
+
 CKEDITOR_UPLOAD_PATH = os.path.join(BASE_DIR,'uploads')
 CKEDITOR_CONFIGS = {
     'default': {

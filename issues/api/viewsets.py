@@ -1,14 +1,18 @@
 from django.http import HttpResponse
 from hamcrest import contains
+from django.shortcuts import render, get_object_or_404
+from issueTracker.settings import INVITE_HEADER_URL, SITE_HOST
 from ..models import *
 from .serializer import *
 from rest_framework.response import Response
 from rest_framework import permissions,viewsets,status,generics
-from rest_framework.permissions import IsAuthenticated,BasePermission
+from rest_framework.permissions import IsAuthenticated,BasePermission,IsAdminUser
 from rest_framework.authentication import *
 from rest_framework.authtoken.models import Token
 #from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
 from knox.models import AuthToken
+from django.utils.text import slugify
 #from issues.api import serializer
 
 ###
@@ -119,3 +123,36 @@ class IssueViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return HttpResponse("Post data not valid")
         
+
+class InviteViewPermission(BasePermission):
+    def has_permission(self, request, view):
+        if(request.user and request.user.is_superuser):
+            return True
+        return False
+
+
+class InviteViewSet(viewsets.ModelViewSet):
+    queryset = Invite.objects.all()
+    serializer_class = InviteSerializer
+    permission_classes = (IsAuthenticated,IsAdminUser)
+
+    def perform_create(self, serializer):
+        string = get_random_string(length=30)
+        serializer.save(slug = string,url = SITE_HOST + INVITE_HEADER_URL + string)
+    
+def invite_action(request,slug):
+    invite = get_object_or_404(Invite,slug=slug)
+    if(int(request.user.id) == int(invite.invitee.id)):
+        proj = Projects.objects.get(id = invite.project.id)
+        inviteList = Invite.objects.all()
+        if(invite.operation == "ADD"):
+            proj.user_team.add(invite.invitee)
+            inviteList.filter(id = invite.id).delete()
+            return HttpResponse("You have been added to new project ")
+        if(invite.operation == "DELETE"):
+            proj.user_team.remove(invite.invitee)
+            inviteList.filter(id = invite.id).delete()
+            return HttpResponse("You have been removed from project ")
+    else:
+        return HttpResponse("NOT DESIRED USER")
+    return HttpResponse("INVALID")
