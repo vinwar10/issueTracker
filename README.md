@@ -12,4 +12,4 @@ WORK DONE :
 4. Platform related APIs 
 
 PENDING : 
-1. Email related API
+1. Invite related API
