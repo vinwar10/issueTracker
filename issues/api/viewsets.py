@@ -137,9 +137,20 @@ class InviteViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,IsAdminUser)
 
     def perform_create(self, serializer):
-        string = get_random_string(length=30)
+        string = getUniqueString()
         serializer.save(slug = string,url = SITE_HOST + INVITE_HEADER_URL + string)
-    
+
+def getUniqueString():
+    string = get_random_string(length=30)
+    flag = False
+    for invite in Invite.objects.all():
+        if(string == invite.slug):
+            flag = True
+    if(flag):
+        return getUniqueString()
+    else: 
+        return string
+
 def invite_action(request,slug):
     invite = get_object_or_404(Invite,slug=slug)
     if(int(request.user.id) == int(invite.invitee.id)):
